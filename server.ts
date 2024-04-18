@@ -64,30 +64,30 @@ function setIntersection(set1, set2) {
   return intersection;
 }
 
-// function generateIntersections(dictionary) {
-//   const intersections = {};
+function generateIntersections(dictionary) {
+  const intersections = {};
 
-//   // Iterate through each character in the dictionary
-//   const chars = Object.keys(dictionary);
-//   for (let i = 0; i < chars.length; i++) {
-//     for (let j = i + 1; j < chars.length; j++) {
-//       const char1 = chars[i];
-//       const char2 = chars[j];
-//       // Ensure char1 is lexically smaller than char2
-//       const key = processStrings(char1, char2);
+  // Iterate through each character in the dictionary
+  const chars = Object.keys(dictionary);
+  for (let i = 0; i < chars.length; i++) {
+    for (let j = i + 1; j < chars.length; j++) {
+      const char1 = chars[i];
+      const char2 = chars[j];
+      // Ensure char1 is lexically smaller than char2
+      const key = processStrings(char1, char2);
 
-//       // Intersection of sets containing words for char1 and char2
-//       const intersection = setIntersection(dictionary[char1], dictionary[char2]);
+      // Intersection of sets containing words for char1 and char2
+      const intersection = setIntersection(dictionary[char1], dictionary[char2]);
 
-//       // If intersection is not empty, save it to intersections object
-//       if (intersection.size > 0) {
-//         intersections[key] = intersection;
-//       }
-//     }
-//   }
+      // If intersection is not empty, save it to intersections object
+      if (intersection.size > 0) {
+        intersections[key] = intersection;
+      }
+    }
+  }
 
-//   return intersections;
-// }
+  return intersections;
+}
 
 // function generateIntersections(dictionary) {
 //   const intersections = {};
@@ -130,61 +130,7 @@ function setIntersection(set1, set2) {
 //   return intersections;
 // }
 
-function generateIntersections(dictionary) {
-  const intersections = {};
 
-  // Create a map of words to characters
-  // const wordToChars = {};
-  // for (const char in dictionary) {
-  //   for (const word of dictionary[char]) {
-  //     if (!wordToChars[word]) {
-  //       wordToChars[word] = new Set();
-  //     }
-  //     if(!(wordToChars[word] instanceof Set)){
-  //       console.log('SMOKING GUN', word, char, typeof wordToChars[word])
-  //     }else{
-  //       wordToChars[word].add(char);
-  //     }
-
-  //   }
-  // }
-  const wordToChars = new Map();
-
-for (const char in dictionary) {
-  for (const word of dictionary[char]) {
-    if (!wordToChars.has(word)) {
-      wordToChars.set(word, new Set());
-    }
-    wordToChars.get(word).add(char);
-  }
-}
-
-  // Iterate through each character in the dictionary
-  const chars = Object.keys(dictionary);
-  for (let i = 0; i < chars.length; i++) {
-    for (let j = i + 1; j < chars.length; j++) {
-      const char1 = chars[i];
-      const char2 = chars[j];
-      // Ensure char1 is lexically smaller than char2
-      const key = [char1, char2].sort().join('');
-
-      // Intersection of sets containing words for char1 and char2
-      const intersection = new Set();
-      for (const word of dictionary[char1]) {
-        if (wordToChars.get(word) && wordToChars.get(word).has(char2)) {
-          intersection.add(word);
-        }
-      }
-
-      // If intersection is not empty, save it to intersections object
-      if (intersection.size > 0) {
-        intersections[key] = intersection;
-      }
-    }
-  }
-
-  return intersections;
-}
 
 function recursivelyGenerateIntersections(dictionary) {
   const finalResult = {}
