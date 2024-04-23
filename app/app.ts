@@ -1,7 +1,19 @@
-//import trieclass
-import { Trie } from './TrieClass';
-
 const fs = require('fs');
+const { Configuration, OpenAIApi } = require('openai');
+const dotenv = require('dotenv');
+
+const { Trie } = require('./components/TrieClass');
+
+dotenv.config();
+
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
+
+//import trieclass
+
 
 let common_words = []
 try {
@@ -40,17 +52,33 @@ const getUniqueCharacters = (quote: string): string[] => {
     const characters: string[] = quote.toLowerCase().match(/[a-z]/g) || [];
 
     for (const char of characters) {
-      if (!uniqueCharacters.includes(char)) {
-        uniqueCharacters.push(char);
-      }
+        if (!uniqueCharacters.includes(char)) {
+            uniqueCharacters.push(char);
+        }
     }
 
     return uniqueCharacters;
-  };
+};
 
-  let uniqueCharacters = getUniqueCharacters("hello world");
+let uniqueCharacters = getUniqueCharacters("hello world");
 console.time("findWords");
 dfs(dictionary.root, '', words, uniqueCharacters);
 console.timeEnd("findWords");
 
+
+
 console.log(words);
+
+
+openai.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages: [
+        { role: 'system', content: 'You are a helpful assistant.' },
+        { role: 'user', content: 'What is the meaning of life?' },
+    ],
+}).then(response => {
+    console.log(response.data.choices[0].message.content);
+    console.log(response.data)
+}).catch(error => {
+    console.error(error);
+});
