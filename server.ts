@@ -13,12 +13,12 @@ let dictionary_words = []
 let dictionary = {};
 
 // Initialize dictionary with empty sets
-for (let i = 0; i < 4; i++) {
+for (let i = 20; i < 26; i++) {
   dictionary[String.fromCharCode(97 + i)] = new Set();
 }
 
 try {
-  const data = fs.readFileSync('./assets/words_alpha.txt', 'utf8');
+  const data = fs.readFileSync('./assets/common_words.txt', 'utf8');
   dictionary_words = data.split('\r\n');
 } catch (err) {
   console.error(err);
@@ -37,6 +37,31 @@ for (let word of dictionary_words) {
 
 
 console.timeEnd("populateDictionary");
+
+const getUniqueCharacters = (quote: string): string[] => {
+  const uniqueCharacters: string[] = [];
+  const characters: string[] = quote.toLowerCase().match(/[a-z]/g) || [];
+
+  for (const char of characters) {
+    if (!uniqueCharacters.includes(char)) {
+      uniqueCharacters.push(char);
+    }
+  }
+
+  return uniqueCharacters;
+};
+
+let uniqueCharacters = getUniqueCharacters("The quick brown fox jumps over the lazy dog.");
+console.log(uniqueCharacters)
+
+let newDictionary = {}
+
+for (let alphabet of Object.keys(dictionary)) {
+  console.log(alphabet, uniqueCharacters.includes(alphabet))
+  if (uniqueCharacters.includes(alphabet)) {
+    newDictionary[alphabet] = dictionary[alphabet]
+  }
+}
 
 function processStrings(string1, string2) {
   // Concatenate the strings and split them into an array of characters
@@ -141,7 +166,7 @@ function recursivelyGenerateIntersections(dictionary) {
   while (Object.keys(intersection).length > 0) {
     order++;
     intersection = generateIntersections(intersection);
-    finalResult[order] = intersection;
+    if (Object.keys(intersection).length > 0) { finalResult[order] = intersection; }
   }
   return finalResult
 }
@@ -163,6 +188,23 @@ function createUnionOfSets(dictionary) {
 
 console.time("recursive");
 const intersection = recursivelyGenerateIntersections(dictionary);
+
+let usefulWords = []
+for (let key in intersection[Object.keys(intersection).length]) {
+  // i want to loop through a set of words and add only words shorter than 6 characters to the usefulWords array
+  for (let word of intersection[Object.keys(intersection).length][key]) {
+    usefulWords.push(word)
+  }
+}
+for (let key in intersection[Object.keys(intersection).length -1]) {
+  // i want to loop through a set of words and add only words shorter than 6 characters to the usefulWords array
+  for (let word of intersection[Object.keys(intersection).length - 1][key]) {
+    usefulWords.push(word)
+  }
+}
+
+
+console.log(usefulWords)
 console.timeEnd("recursive");
 // console.log(recursivelyGenerateIntersections(dictionary))
 
@@ -175,3 +217,4 @@ resultsOrders.forEach((order) => {
     console.log(`    ${key}: ${intersection[order][key].size} words`);
   }
 });
+console.log(intersection[Object.keys(intersection).length])
