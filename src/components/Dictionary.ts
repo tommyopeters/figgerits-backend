@@ -21,4 +21,4 @@ common_words.forEach(word => {
 console.log(dictionary)
 console.timeEnd("populateDictionary");
 
-export { dictionary };
+export { dictionary, common_words };
