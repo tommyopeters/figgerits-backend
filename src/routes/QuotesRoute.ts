@@ -94,23 +94,32 @@ const router = require("express").Router();
 // let selectedWords = selectWords(valid_words, uniqueCharacters);
 
 
-const { selectWords } = require("../utils/nlp");
+const { selectWords, excludeWordsWithoutCharacters } = require("../utils/nlp");
 const { replicate } = require("../config/openai");
 const { common_words } = require("../components/Dictionary");
 const { getUniqueCharacters, getUniqueWords } = require("../utils/nlp");
 
 const generateHints = async (words) => {
     // Define the prompt for the LLM
-    const Prompt = `Create an array of objects from the given words: [${words.join(', ')}]. Each object should have two properties: 'word' and 'hint'. The 'word' property should hold the word itself, and the 'hint' property should contain a cryptic hint for the word, limited to 6 words.`;
+    const Prompt = `Generate a valid JSON string representing an array of objects from the given words: [${words.join(', ')}]. Each object should have two properties: 'word' and 'hint'. The 'word' property should hold the word itself, and the 'hint' property should contain a cryptic hint for the word, limited to 6 words.`;
 
     const model = "andreasjansson/llama-2-13b-chat-gguf:ddf8f2edd187159adba2266bc1eaa7f3e55af483f23c1b3618c28ec73a9370bd";
     const input = {
-        system_prompt: "Generate an array of objects from a given list of words. Each object should have two properties: 'word' and 'hint'. The 'word' property should be the word itself, and the 'hint' property should be a cryptic hint for the word, not exceeding 6 words. The output should not contain any additional text.",
+        system_prompt: "Generate a valid JSON string representing an array of objects from a given list of words. Each object should have two properties: 'word' and 'hint'. The 'word' property should be the word itself, and the 'hint' property should be a cryptic hint for the word, not exceeding 6 words. The output should not contain any additional text.",
         prompt: Prompt,
     };
     const output = await replicate.run(model, { input });
     return output.join('');
 }
+
+function convertToValidJson(invalidJson) {
+    const jsonString = JSON.stringify(invalidJson);
+    const validJsonString = jsonString.replace(/"(\w+)"\s*:/g, function(_, key){
+        return `"${key}":`;
+    });
+    return JSON.parse(validJsonString);
+}
+
 
 let valid_words = common_words.filter(word => word.length > 3 && word.length < 7);
 
@@ -192,12 +201,12 @@ const extractArray = (string) => {
     let end = string.indexOf(']');
 
     try {
-        let data = JSON.parse(string.substring(start, end + 1));
+        let data = JSON.parse(string.substring(start, end + 1).split('\n').join(''));
         return data;
         // Continue processing the data
     } catch (error) {
-        console.error("Invalid JSON format: ", error);
-        return [];
+        console.error("Invalid JSON format: ", string.substring(start, end + 1));
+        return string;
         // Handle the error as needed
     }
 }
@@ -217,7 +226,7 @@ router.get("/", (req, res) => {
         let uniqueWords = getUniqueWords(randomQuote.fact);
 
         // remove uniqueWords from common_words
-        valid_words = valid_words.filter(word => !uniqueWords.includes(word));
+        valid_words = excludeWordsWithoutCharacters(valid_words).filter(word => !uniqueWords.includes(word));
 
         // select words that contain the unique characters
         let selectedWords = selectWords(valid_words, uniqueCharacters);

@@ -22,6 +22,9 @@ export const getUniqueCharacters = (quote: string): string[] => {
     return uniqueCharacters;
 };
 
+export const excludeWordsWithoutCharacters = (words: string[], characters: string[]): string[] => {
+    return words.filter(word => [...word].every(char => characters.includes(char)));
+}
 
 export const getUniqueWords = (quote: string): string[] => {
     const uniqueWords: string[] = [];
