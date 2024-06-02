@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const QuoteModel = require("../models/quote.model");
 // const { selectWords } = require("../utils/nlp");
 // const {openai} = require("../config/openai");
 // const { common_words } = require("../components/Dictionary");
@@ -114,7 +115,7 @@ const generateHints = async (words) => {
 
 function convertToValidJson(invalidJson) {
     const jsonString = JSON.stringify(invalidJson);
-    const validJsonString = jsonString.replace(/"(\w+)"\s*:/g, function(_, key){
+    const validJsonString = jsonString.replace(/"(\w+)"\s*:/g, function (_, key) {
         return `"${key}":`;
     });
     return JSON.parse(validJsonString);
@@ -213,32 +214,54 @@ const extractArray = (string) => {
 
 
 
-router.get("/", (req, res) => {
+// router.post("/api/quotes", (req, res) => {
 
-    // select a random quote
-    let randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+//     // select a random quote
+//     let randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
-    // get unique characters from the quote
-    (async () => {
-        let uniqueCharacters = getUniqueCharacters(randomQuote.fact);
+//     // get unique characters from the quote
+//     (async () => {
+//         let uniqueCharacters = getUniqueCharacters(randomQuote.fact);
 
-        // get unique words from the quote
-        let uniqueWords = getUniqueWords(randomQuote.fact);
+//         // get unique words from the quote
+//         let uniqueWords = getUniqueWords(randomQuote.fact);
 
-        // remove uniqueWords from common_words
-        valid_words = excludeWordsWithoutCharacters(valid_words).filter(word => !uniqueWords.includes(word));
+//         // remove uniqueWords from common_words
+//         valid_words = excludeWordsWithoutCharacters(valid_words).filter(word => !uniqueWords.includes(word));
 
-        // select words that contain the unique characters
-        let selectedWords = selectWords(valid_words, uniqueCharacters);
+//         // select words that contain the unique characters
+//         let selectedWords = selectWords(valid_words, uniqueCharacters);
 
-        const answer = await (generateHints(selectedWords));
+//         const answer = await (generateHints(selectedWords));
 
-        res.send({
-            fact: randomQuote.fact,
-            info: randomQuote.info,
-            hints: extractArray(answer)
-        });
-    })();
+//         res.send({
+//             fact: randomQuote.fact,
+//             info: randomQuote.info,
+//             hints: extractArray(answer)
+//         });
+//     })();
+// });
+router.post("/api/quotes", async (req, res) => {
+
+    try {
+        if (req.body.quote) {
+            let uniqueCharacters = getUniqueCharacters(req.body.quote);
+            let uniqueWords = getUniqueWords(req.body.quote);
+            let filteredWords = common_words.filter(word => word.length > 3 && word.length < 7).filter(word => !uniqueWords.includes(word));
+            let valid_words = excludeWordsWithoutCharacters(filteredWords, uniqueCharacters);
+            let selectedWords = selectWords(valid_words, uniqueCharacters);
+            const answer = await (generateHints(selectedWords));
+            const quote = await QuoteModel.create({
+                quote: req.body.quote,
+                info: req.body.info,
+                hints: extractArray(answer),
+            });
+            res.status(200).json(quote);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: "An error occurred while creating the quote." });
+    }
 });
 
 module.exports = router;
