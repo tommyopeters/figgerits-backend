@@ -190,4 +190,14 @@ router.post("/api/quotes", async (req, res) => {
     }
 });
 
+router.get("/api/quote", async (req, res) => {
+    try {
+        const quote = await QuoteModel.aggregate([{ $sample: { size: 1 } }]);
+        res.status(200).json(quote);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: "An error occurred while fetching the quote." });
+    }
+});
+
 module.exports = router;
