@@ -1,4 +1,3 @@
-a
 abandon
 ability
 able
@@ -36,7 +35,6 @@ actor
 actress
 actual
 actually
-ad
 adapt
 add
 addition
@@ -67,7 +65,6 @@ affect
 afford
 afraid
 African
-African-American
 after
 afternoon
 again
@@ -81,7 +78,6 @@ ago
 agree
 agreement
 agricultural
-ah
 ahead
 aid
 aide
@@ -107,7 +103,6 @@ alter
 alternative
 although
 always
-AM
 amazing
 American
 among
@@ -172,7 +167,6 @@ art
 article
 artist
 artistic
-as
 Asian
 aside
 ask
@@ -193,7 +187,6 @@ association
 assume
 assumption
 assure
-at
 athlete
 athletic
 atmosphere
@@ -245,7 +238,6 @@ basketball
 bathroom
 battery
 battle
-be
 beach
 bean
 bear
@@ -363,7 +355,6 @@ butter
 button
 buy
 buyer
-by
 cabin
 cabinet
 cable
@@ -799,7 +790,6 @@ divide
 division
 divorce
 DNA
-do
 doctor
 document
 dog
@@ -876,7 +866,7 @@ eliminate
 elite
 else
 elsewhere
-e-mail
+email
 embrace
 emerge
 emergency
@@ -1234,7 +1224,6 @@ hardly
 hat
 hate
 have
-he
 head
 headline
 headquarters
@@ -1344,7 +1333,6 @@ impression
 impressive
 improve
 improvement
-in
 incentive
 incident
 include
@@ -1431,10 +1419,8 @@ Islamic
 island
 Israeli
 issue
-it
 Italian
 item
-its
 itself
 jacket
 jail
@@ -1559,7 +1545,6 @@ locate
 location
 lock
 long
-long-term
 look
 loose
 lose
@@ -1619,7 +1604,6 @@ matter
 may
 maybe
 mayor
-me
 meal
 mean
 meaning
@@ -1668,7 +1652,6 @@ mission
 mistake
 mix
 mixture
-mm-hmm
 mode
 model
 moderate
@@ -1754,7 +1737,6 @@ next
 nice
 night
 nine
-no
 nobody
 nod
 noise
@@ -1775,7 +1757,6 @@ notion
 novel
 now
 nowhere
-n't
 nuclear
 number
 numerous
@@ -1798,7 +1779,6 @@ occur
 ocean
 odd
 odds
-of
 off
 offense
 offensive
@@ -1807,13 +1787,10 @@ office
 officer
 official
 often
-oh
 oil
-ok
 okay
 old
 Olympic
-on
 once
 one
 ongoing
@@ -1904,7 +1881,6 @@ pattern
 pause
 pay
 payment
-PC
 peace
 peak
 peer
@@ -1970,7 +1946,6 @@ pleasure
 plenty
 plot
 plus
-PM
 pocket
 poem
 poet
@@ -2456,8 +2431,6 @@ smoke
 smooth
 snap
 snow
-so
-so-called
 soccer
 social
 society
@@ -2726,7 +2699,6 @@ tire
 tired
 tissue
 title
-to
 tobacco
 today
 toe
@@ -2792,7 +2764,6 @@ try
 tube
 tunnel
 turn
-TV
 twelve
 twenty
 twice
@@ -2825,12 +2796,10 @@ unlike
 unlikely
 until
 unusual
-up
 upon
 upper
 urban
 urge
-us
 use
 used
 useful
@@ -2881,7 +2850,6 @@ volume
 volunteer
 vote
 voter
-vs
 vulnerable
 wage
 wait
@@ -2900,7 +2868,6 @@ watch
 water
 wave
 way
-we
 weak
 wealth
 wealthy
