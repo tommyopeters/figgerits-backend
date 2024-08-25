@@ -11,8 +11,13 @@ const PORT = process.env.PORT || 8000;
 
 const app = express();
 
+
+const corsOptions = {
+  origin: true,
+};
+
 app.use(cors());
-app.use(express.json());
+app.use(express.json(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", quotesRoute);
