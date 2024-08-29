@@ -38,7 +38,7 @@ const UserSchema = new mongoose.Schema(
             unique: true,
         },
         puzzleProgress: {
-            type: {
+            type: [{
                 puzzleId: String,
                 completed: Boolean,
                 skipped: Boolean,
@@ -46,7 +46,7 @@ const UserSchema = new mongoose.Schema(
                 attempts: Number,
                 timeTaken: Number,
                 dateCompleted: Date,
-            },
+            }],
             required: false,
         },
 

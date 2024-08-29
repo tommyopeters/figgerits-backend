@@ -14,7 +14,7 @@ if (!serviceAccountBase64) {
 
 const serviceAccount = JSON.parse(Buffer.from(serviceAccountBase64, 'base64').toString('utf-8'));
 
-const quotesRoute = require("./src/routes/QuotesRoute");
+const puzzlesRoute = require("./src/routes/PuzzlesRoute");
 const authRoute = require("./src/routes/AuthRoute");
 
 const PORT = process.env.PORT || 8000;
@@ -52,18 +52,53 @@ const authenticate = async (req, res, next) => {
 };
 
 app.use("/", authRoute);
-app.use("/api", authenticate, quotesRoute);
+app.use("/api", authenticate, puzzlesRoute);
 
-mongoose.connect(`mongodb+srv://figgeritsdb.ujqbmrg.mongodb.net/test?retryWrites=true`, {
+mongoose.connect(`mongodb+srv://figgeritsdb.ujqbmrg.mongodb.net/figgerits?retryWrites=true`, {
   user: process.env.MONGO_DB_USERNAME,
   pass: process.env.MONGO_DB_PASSWORD,
-  dbName: "test",
+  dbName: "figgerits",
 })
   .then(() => {
     console.log("Connected to the database ✅");
     app.listen(PORT, () => {
       console.log(`server run on port ${PORT} ✅`);
     });
+
+
+    // // Script to update many documents
+    // const updateDocuments = async () => {
+    //   const db = mongoose.connection.db;
+    //   const collection = db.collection('puzzles'); // Replace with your collection name
+
+    //   const pipeline = [
+    //     {
+    //       $set: {
+    //         clues: {
+    //           $map: {
+    //             input: "$clues",
+    //             as: "clue",
+    //             in: {
+    //               word: "$$clue.word",
+    //               clue: "$$clue.hint"
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   ];
+
+    //   try {
+    //     const result = await collection.updateMany({}, pipeline);
+    //     console.log('Documents updated:', result.modifiedCount);
+    //   } catch (error) {
+    //     console.error('Error updating documents:', error);
+    //   }
+    // };
+
+    // // Call the update function
+    // updateDocuments();
+
   })
   .catch((err) => {
     console.log(`An error occurred while connecting to the database: ${err} ❌`);
