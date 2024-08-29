@@ -93,6 +93,9 @@ obj
 .env
 appsettings.json
 local.settings.json
+serviceAccountKey.json
+config/serviceAccountKey.json
+src/config/serviceAccountKey.json
 package-lock.json
 # Azurite artifacts
 __blobstorage__

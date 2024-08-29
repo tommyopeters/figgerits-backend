@@ -132,7 +132,7 @@ const extractArray = (string) => {
 //         });
 //     })();
 // });
-router.post("/api/quotes", async (req, res) => {
+router.post("/quotes", async (req, res) => {
 
     try {
         if (req.body.quote) {
@@ -190,7 +190,7 @@ router.post("/api/quotes", async (req, res) => {
     }
 });
 
-router.get("/api/quote", async (req, res) => {
+router.get("/quote", async (req, res) => {
     try {
         const quote = await QuoteModel.aggregate([{ $sample: { size: 1 } }]);
         res.status(200).json(quote);
